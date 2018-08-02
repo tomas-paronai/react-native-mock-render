@@ -1,4 +1,3 @@
-
 const NativeModules = {
   Timing: require('./Timing'),
   UIManager: require('./UIManager'),
@@ -18,6 +17,9 @@ const NativeModules = {
   LinkingManager: require('./LinkingManager'),
   TimePickerAndroid: require('./TimePickerAndroid'),
   Vibration: require('./Vibration'),
+  CredentialsManager: require('./CredentialsManager'),
+  InAppUtils: require('./InAppUtils'),
+  RNSVGSvgViewManager: require('./RNSVGSvgViewManager')
 };
 
 module.exports = NativeModules;

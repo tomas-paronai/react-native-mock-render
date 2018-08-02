@@ -22,19 +22,38 @@ function wrap(value, callback) {
 let db = {};
 
 const AsyncStorage = {
-  getItem(key, callback) {
-    return wrap(db[key] || null, callback);
-  },
-
-  setItem(key, value, callback) {
-    db[key] = value;
-    return wrap(null, callback);
-  },
-
-  removeItem(key, callback) {
-    delete db[key];
-    return wrap(null, callback);
-  },
+  setItem: jest.fn((item, value) => {
+    return new Promise((resolve, reject) => {
+      db[item] = value;
+      resolve(value);
+    });
+  }),
+  multiSet: jest.fn((item, value) => {
+    return new Promise((resolve, reject) => {
+      db[item] = value;
+      resolve(value);
+    });
+  }),
+  getItem: jest.fn((item, value) => {
+    return new Promise((resolve, reject) => {
+      resolve(db[item]);
+    });
+  }),
+  multiGet: jest.fn(item => {
+    return new Promise((resolve, reject) => {
+      resolve(db[item]);
+    });
+  }),
+  removeItem: jest.fn(item => {
+    return new Promise((resolve, reject) => {
+      resolve(delete db[item]);
+    });
+  }),
+  getAllKeys: jest.fn(items => {
+    return new Promise(resolve => {
+      resolve(db.keys());
+    });
+  }),
 
   mergeItem(key, value, callback) {
     db[key] = Object.assign({}, db[key] || {}, value);
@@ -46,24 +65,7 @@ const AsyncStorage = {
     return wrap(null, callback);
   },
 
-  getAllKeys(callback) {
-    return wrap(Object.keys(db), callback);
-  },
-
-  flushGetRequests() {
-
-  },
-
-  multiGet(keys, callback) {
-    return wrap(keys.map(k => [k, db[k] || null]), callback);
-  },
-
-  multiSet(keyValuePairs, callback) {
-    keyValuePairs.forEach(([key, value]) => {
-      db[key] = value;
-    });
-    return wrap(null, callback);
-  },
+  flushGetRequests() {},
 
   multiRemove(keys, callback) {
     keys.forEach(key => delete db[key]);
@@ -75,7 +77,7 @@ const AsyncStorage = {
       db[key] = Object.asign({}, db[key] || {}, value);
     });
     return wrap(null, callback);
-  },
+  }
 };
 
 module.exports = AsyncStorage;

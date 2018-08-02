@@ -1,7 +1,7 @@
 const CredentialsManager = {
-  saveCredentials: () => {},
-  credentials: () => {},
-  clear: () => {}
+  saveCredentials: jest.fn(),
+  credentials: jest.fn(),
+  clear: jest.fn()
 };
 
 module.exports = CredentialsManager;
